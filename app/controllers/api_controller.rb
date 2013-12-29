@@ -80,7 +80,10 @@ class ApiController < ApplicationController
 
             if DateTime.strptime(current_date + start_time, "%Y-%m-%d %Z %H:%M %p") >= now
               class_name = cols[1].text.strip
-              YogaClass.create(:name => class_name, :start => start_time, :end => end_time, :day => day, :studio => studio_name)
+              # class_name = cols[1].css("a")[0].to_s
+              if not cols[1].css("span")[0]["class"].include?('cancelled')
+                YogaClass.create(:name => class_name, :start => start_time, :end => end_time, :day => day, :studio => studio_name)
+              end
             end
 
           end
