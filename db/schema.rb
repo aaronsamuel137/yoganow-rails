@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131229044844) do
+ActiveRecord::Schema.define(version: 20131229200416) do
 
   create_table "yoga_classes", force: true do |t|
     t.string   "name"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20131229044844) do
     t.date     "day"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "studio"
   end
 
 end

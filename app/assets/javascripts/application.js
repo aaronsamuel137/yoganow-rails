@@ -28,13 +28,13 @@ var api_call = function(query) {
             // class_table.append('<tr><th>No more classes at <a href="' + link +
             //             '">' + name + '</a> today</th></tr>');
         } else {
-            var header = '<tr><th><a href="' + link + '">' + name + '</th>' +
+            var header = '<tr><th><a target="_blank" href="' + link + '">' + name + '</th>' +
                          '<th>Start Time</th>' +
                          '<th>End Time</th></tr>';
             class_table.append(header);
 
             $.each(classes, function(index, val) {
-                var row = '<tr><td>' + val['class_name'] + '</td>' +
+                var row = '<tr><td>' + val['class_name'].replace('â', '-') + '</td>' +
                           '<td>' + val['start_time'] + '</td>' +
                           '<td>' + val['end_time'] + '</td></tr>';
                 class_table.append(row);
