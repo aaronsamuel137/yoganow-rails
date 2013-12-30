@@ -16,8 +16,8 @@
 //= require bootstrap
 //= require_tree .
 
-var api_call = function(query, num_classes) {
-    $.getJSON('/api?studio=' + query + '&num_classes=' + num_classes, function(data) {
+var api_call = function(query, num_classes, start_time) {
+    $.getJSON('/api?studio=' + query + '&num_classes=' + num_classes + '&start_time=' + start_time, function(data) {
         var name = data['studio_name'];
         var classes = data['class_list'];
         var link = data['link'];

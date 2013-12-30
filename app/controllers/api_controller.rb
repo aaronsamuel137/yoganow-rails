@@ -3,58 +3,67 @@ require 'open-uri'
 class ApiController < ApplicationController
   def index()
     studio_name = params[:studio]
-    num_classes = params[:num_classes]
+    num_classes = params[:num_classes].to_i
+    start_time = params[:start_time]
+
     if studio_name == 'yogapod'
-      yoga_pod(num_classes)
+      yoga_pod(num_classes, start_time)
     elsif studio_name == 'corepower_south'
-      corepower_south(num_classes)
+      corepower_south(num_classes, start_time)
     elsif studio_name == 'corepower_north'
-      corepower_north(num_classes)
+      corepower_north(num_classes, start_time)
     elsif studio_name == 'corepower_hill'
-      corepower_hill(num_classes)
+      corepower_hill(num_classes, start_time)
     end
   end
 
-  def corepower_south(num_classes)
+  def corepower_south(num_classes, start_time)
     south_b = 'https://www.healcode.com/widgets/schedules/print/xn4hucg?options[location]=110_3'
-    get_healcode_data(south_b, 'Core Power South Boulder', 'http://www.corepoweryoga.com/yoga-studio/Colorado/schedule/34', num_classes)
+    get_healcode_data(south_b, 'Core Power South Boulder', 'http://www.corepoweryoga.com/yoga-studio/Colorado/schedule/34', num_classes, start_time)
   end
 
-  def corepower_north(num_classes)
+  def corepower_north(num_classes, start_time)
     north_b = 'https://www.healcode.com/widgets/schedules/print/m64ldzf?options%5Blocation%5D=110_12'
-    get_healcode_data(north_b, 'Core Power North Boulder', 'http://www.corepoweryoga.com/yoga-studio/Colorado/schedule/32', num_classes)
+    get_healcode_data(north_b, 'Core Power North Boulder', 'http://www.corepoweryoga.com/yoga-studio/Colorado/schedule/32', num_classes, start_time)
   end
 
-  def corepower_hill(num_classes)
+  def corepower_hill(num_classes, start_time)
     hill = 'https://www.healcode.com/widgets/schedules/print/m84u719?options[location]=110_9'
-    get_healcode_data(hill, 'Core Power Hill', 'http://www.corepoweryoga.com/yoga-studio/Colorado/schedule/19', num_classes)
+    get_healcode_data(hill, 'Core Power Hill', 'http://www.corepoweryoga.com/yoga-studio/Colorado/schedule/19', num_classes, start_time)
   end
 
-  def yoga_pod(num_classes)
+  def yoga_pod(num_classes, start_time)
     url = 'http://www.healcode.com/widgets/schedules/print/dq55683k9o'
-    get_healcode_data(url, 'Yoga Pod', 'http://yogapodcommunity.com/boulder/schedule', num_classes)
+    get_healcode_data(url, 'Yoga Pod', 'http://yogapodcommunity.com/boulder/schedule', num_classes, start_time)
   end
 
-  def get_healcode_data(url, studio_name, studio_link, num_classes)
+  def get_healcode_data(url, studio_name, studio_link, num_classes, start_time)
     now = DateTime.now
     current_date = now.strftime("%Y-%m-%d %Z ")
     today = now.to_date
 
-    params = {:day => today, :studio => studio_name}
-    if num_classes.to_i == -1
-      classes = YogaClass.where("day = ? AND studio = ?", params[:day], params[:studio])
+    if start_time == 'null' or start_time == '-1'
+      begin_time = now
     else
-      classes = YogaClass.where("day = ? AND studio = ?", params[:day], params[:studio]).limit(num_classes.to_i + 1)
+      begin_time = DateTime.strptime(current_date + start_time, "%Y-%m-%d %Z %H")
     end
+
+    params = {:day => today, :studio => studio_name}
+    classes = YogaClass.where("day = ? AND studio = ?", params[:day], params[:studio])
 
     # if classes for today are already in the db, pull directly without scraping the web
     if classes.size > 0
       class_list = Array.new
 
+      class_num = 0
       classes.each do |clas|
-        if DateTime.strptime(current_date + clas.start, "%Y-%m-%d %Z %H:%M %p") >= now
+        if DateTime.strptime(current_date + clas.start, "%Y-%m-%d %Z %H:%M %p") >= begin_time
           class_data = {'class_name' => clas.name, 'start_time' => clas.start, 'end_time' => clas.end, 'date' => clas.day}
           class_list.push(class_data)
+          class_num += 1
+          if num_classes != -1 and class_num >= num_classes
+            break
+          end
         end
       end
 
