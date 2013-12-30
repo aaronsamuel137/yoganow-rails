@@ -9,7 +9,12 @@ class ListingController < ApplicationController
     end
 
     if session[:num_classes].nil?
-      gon.num_classes = 3
+      gon.num_classes = '3'
+      @num_classes = '3'
+      session[:num_classes] = '3'
+    elsif session[:num_classes] == '-1'
+      session[:num_classes] = '-1'
+      @num_classes = 'all remaining'
     else
       gon.num_classes = session[:num_classes]
       @num_classes = session[:num_classes]

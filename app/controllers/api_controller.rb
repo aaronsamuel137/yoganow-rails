@@ -54,6 +54,7 @@ class ApiController < ApplicationController
     # if classes for today are already in the db, pull directly without scraping the web
     if classes.size > 0
       class_list = Array.new
+      puts num_classes
 
       class_num = 0
       classes.each do |clas|
@@ -61,7 +62,7 @@ class ApiController < ApplicationController
           class_data = {'class_name' => clas.name, 'start_time' => clas.start, 'end_time' => clas.end, 'date' => clas.day}
           class_list.push(class_data)
           class_num += 1
-          if num_classes != -1 and class_num >= num_classes
+          if num_classes > 0 and class_num >= num_classes
             break
           end
         end
