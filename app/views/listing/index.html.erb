@@ -1,55 +1,72 @@
 <% content_for :nav do %>
 
-    <li class="active"><a href="/">Home</a></li>
-    <li><a href="/blog">Blog</a></li>
+  <li class="active"><a href="/">Home</a></li>
+  <li><a href="/blog">Blog</a></li>
 
 <% end %>
 
 <% content_for :main do %>
 
 <div class="hero-unit">
-    <h1>Yoga NOW Boulder</h1>
+  <h1>Yoga NOW Boulder</h1>
 </div>
 
+
+
 <div class="row">
-    <div class="col-md-8">
-        <div id="listing">
-            <h3>Classes Happening NOW</h3>
-            <div id="loading" style="text-align: center">
-                <img id="spinner" src="/assets/ajax-loader.gif" alt="Please wait">
-            </div>
-            <table id="class_table" class="table table-striped">
-                <thead></thead>
-                <tbody></tbody>
-            </table>
-            <div id="no-classes">
-            </div>
-            <script type="text/javascript">
-                var studios = ['yogapod', 'corepower_north', 'corepower_south', 'corepower_hill']
-                $.each(studios, function(i, studio) {
-                    api_call(studio);
-                });
-                var t = setTimeout(function() {
-                    var table = $("#class_table").find('tbody');
-                    console.log(table.html())
-                    if (table.html() == '') {
-                        $("#no-classes").append('<p>No more classes today at supported studios</p>');
-                    }
-                }, 10000);
-            </script>
+  <div class="col-md-8">
+    <div id="listing">
+      <h3>Classes Happening NOW
+        <div class="btn-group" style="float: right;">
+          <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Number of Classes Displayed <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="#" onclick="window.location.href='?num_classes=1';">1</a></li>
+            <li><a href="#" onclick="window.location.href='?num_classes=2';">2</a></li>
+            <li><a href="#" onclick="window.location.href='?num_classes=3';">3</a></li>
+            <li><a href="#" onclick="window.location.href='?num_classes=4';">4</a></li>
+            <li><a href="#" onclick="window.location.href='?num_classes=-1';">Rest of Day</a></li>
+          </ul>
         </div>
+      </h3>
+
+      <div id="loading" style="text-align: center">
+        <img id="spinner" src="/assets/ajax-loader.gif" alt="Please wait">
+      </div>
+      <div class="table-holder">
+        <table id="class_table" class="table table-striped">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div id="no-classes">
+      </div>
+      <script type="text/javascript">
+        var studios = ['yogapod', 'corepower_north', 'corepower_south', 'corepower_hill']
+        $.each(studios, function(i, studio) {
+          api_call(studio, gon.num_classes);
+        });
+        var t = setTimeout(function() {
+          var table = $("#class_table").find('tbody');
+          console.log(table.html())
+          if (table.html() == '') {
+            $("#no-classes").append('<p>No more classes today at supported studios</p>');
+          }
+        }, 10000);
+      </script>
     </div>
-    <div class="col-md-4">
-        <h3>About</h3>
-        <p>Yoga NOW Boulder aims to display all the yoga classes
-           happening in Boulder within the next few hours. This spares
-           one the trouble of having to search through many studio sites
-           just to find an interesting class. As of now, only a few studios
-           are supported, but there are plans to support more and more as time goes on.</p>
-        <br>
-        <p>Want your studio to be added to or removed from Yoga NOW Boulder? Email
-           aaron@yoganowboulder.com.</p>
-    </div>
+  </div>
+  <div class="col-md-4">
+    <h3>About</h3>
+    <p>Yoga NOW Boulder aims to display all the yoga classes
+       happening in Boulder within the next few hours. This spares
+       one the trouble of having to search through many studio sites
+       just to find an interesting class. As of now, only a few studios
+       are supported, but there are plans to support more and more as time goes on.</p>
+    <br>
+    <p>Want your studio to be added to or removed from Yoga NOW Boulder? Email
+       aaron@yoganowboulder.com.</p>
+  </div>
 </div>
 
 <% end %>
