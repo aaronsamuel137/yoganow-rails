@@ -8,13 +8,19 @@ class ListingController < ApplicationController
       session[:start_time] = params[:start_time]
     end
 
-    num_classes = session[:num_classes]
-    if num_classes.nil?
+    if session[:num_classes].nil?
       gon.num_classes = 3
     else
-      gon.num_classes = num_classes
+      gon.num_classes = session[:num_classes]
+      @num_classes = session[:num_classes]
     end
 
     gon.start_time = session[:start_time]
+    if session[:start_time] == '-1'
+      @start_time = 'now'
+    else
+      time = DateTime.strptime(session[:start_time].to_s, "%H").strftime("%I:%M %p")
+      @start_time = 'at ' + time
+    end
   end
 end
