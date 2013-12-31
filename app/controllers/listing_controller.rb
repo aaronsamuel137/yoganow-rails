@@ -13,7 +13,7 @@ class ListingController < ApplicationController
       @num_classes = '3'
       session[:num_classes] = '3'
     elsif session[:num_classes] == '-1'
-      session[:num_classes] = '-1'
+      session[:num_classes] = nil
       @num_classes = 'all remaining'
     else
       gon.num_classes = session[:num_classes]
@@ -21,7 +21,7 @@ class ListingController < ApplicationController
     end
 
     gon.start_time = session[:start_time]
-    if session[:start_time] == '-1'
+    if session[:start_time] == '-1' or session[:start_time].nil?
       @start_time = 'now'
     else
       time = DateTime.strptime(session[:start_time].to_s, "%H").strftime("%I:%M %p")

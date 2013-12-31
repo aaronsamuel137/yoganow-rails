@@ -32,6 +32,7 @@ gem 'jbuilder', '~> 1.2'
 gem 'bootstrap-sass'
 group :development do
   gem 'rails_layout'
+  gem 'sqlite3'
 end
 
 gem 'nokogiri', '~> 1.6.1'
