@@ -106,7 +106,7 @@ class ApiController < ApplicationController
           end
         end
       end
-      get_healcode_data(url, studio_name, studio_link)
+      get_healcode_data(url, studio_name, studio_link, num_classes, start_time)
     end
   end
 end
