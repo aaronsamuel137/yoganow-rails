@@ -1,3 +1,5 @@
+require 'open-uri'
+
 module ApiHelper
   def self.corepower_south(num_classes, start_time)
     south_b = 'https://www.healcode.com/widgets/schedules/print/xn4hucg?options[location]=110_3'

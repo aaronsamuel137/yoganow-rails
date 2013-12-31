@@ -1,5 +1,3 @@
-require 'open-uri'
-
 class ApiController < ApplicationController
   def index()
     studio_name = params[:studio]
