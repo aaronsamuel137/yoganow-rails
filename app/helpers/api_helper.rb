@@ -42,24 +42,17 @@ module ApiHelper
 
       # get the class times and names from other rows
       else
-        # puts "day: #{day}"
-        # puts "today: #{today}"
-
         cols = row.css("td")
         if cols.size > 2 and not day.nil? and day >= today
           class_time = cols[0].css("span span")
           start_time = class_time[0].text.strip
           end_time = class_time[1].text.delete("-").strip
 
-          puts "class time: #{DateTime.strptime(current_date + start_time, "%Y-%m-%d %Z %H:%M %p")}"
-          puts "now: #{now}"
-
           if DateTime.strptime(current_date + start_time, "%Y-%m-%d %Z %H:%M %p") >= now
             class_name = cols[1].text.strip
             # class_name = cols[1].css("a")[0].to_s
             if not cols[1].css("span")[0]["class"].include?('cancelled')
               YogaClass.create(:name => class_name, :start => start_time, :end => end_time, :day => day, :studio => studio_data.studio_name)
-              puts "added class #{class_name}"
             end
           end
         end
