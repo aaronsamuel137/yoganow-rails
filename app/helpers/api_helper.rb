@@ -23,13 +23,13 @@ module ApiHelper
   end
 
   def self.load_db(studio_data)
-    now = DateTime.now
+    now = DateTime.now.in_time_zone("Mountain Time (US & Canada)")
     current_date = now.strftime("%Y-%m-%d %Z ")
+    tz = now.strftime("%Z")
     today = now.to_date
 
     uri = URI(studio_data.data_url)
     page = Nokogiri::HTML(open(uri))
-    puts 'opened page'
     rows = page.css("tr")
     day = nil
 
@@ -37,22 +37,29 @@ module ApiHelper
       # get the current date from header rows
       if row["class"] == "schedule_header"
         text = row.text.split()
-        date_str = [text[1], text[2], text[3]].join(' ')
-        day = Date.strptime(date_str, "%B %d, %Y")
+        date_str = [text[1], text[2], text[3], tz].join(' ')
+        day = Date.strptime(date_str, "%B %d, %Y %Z")
 
       # get the class times and names from other rows
       else
+        # puts "day: #{day}"
+        # puts "today: #{today}"
+
         cols = row.css("td")
         if cols.size > 2 and not day.nil? and day >= today
           class_time = cols[0].css("span span")
           start_time = class_time[0].text.strip
           end_time = class_time[1].text.delete("-").strip
 
+          puts "class time: #{DateTime.strptime(current_date + start_time, "%Y-%m-%d %Z %H:%M %p")}"
+          puts "now: #{now}"
+
           if DateTime.strptime(current_date + start_time, "%Y-%m-%d %Z %H:%M %p") >= now
             class_name = cols[1].text.strip
             # class_name = cols[1].css("a")[0].to_s
             if not cols[1].css("span")[0]["class"].include?('cancelled')
               YogaClass.create(:name => class_name, :start => start_time, :end => end_time, :day => day, :studio => studio_data.studio_name)
+              puts "added class #{class_name}"
             end
           end
         end
@@ -61,7 +68,7 @@ module ApiHelper
   end
 
   def self.get_healcode_data(studio_data, num_classes, start_time)
-    now = DateTime.now
+    now = DateTime.now.in_time_zone("Mountain Time (US & Canada)")
     current_date = now.strftime("%Y-%m-%d %Z ")
     today = now.to_date
 
