@@ -6,11 +6,10 @@ module ApiHelper
   include StudioConstants
 
   def self.load_classes()
-    num_classes = -1
-    start_time = -1
-    threads = []
+    threads = Array.new
+
     StudioConstants::STUDIOS.each do |studio|
-      thread = Thread.new{
+      thread = Thread.new {
         puts "Loading data for #{studio.studio_name}"
         ApiHelper.load_db(studio)
         puts "Done loading data for #{studio.studio_name}"
@@ -66,10 +65,10 @@ module ApiHelper
     current_date = now.strftime("%Y-%m-%d %Z ")
     today = now.to_date
 
-    if start_time == 'null' or start_time == '-1' or start_time = -1
+    if start_time == -1
       begin_time = now
     else
-      begin_time = DateTime.strptime(current_date + start_time, "%Y-%m-%d %Z %H")
+      begin_time = DateTime.strptime(current_date + start_time.to_s, "%Y-%m-%d %Z %H")
     end
 
     params = {:day => today, :studio => studio_data.studio_name}

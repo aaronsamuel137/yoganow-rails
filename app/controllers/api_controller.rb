@@ -5,7 +5,7 @@ class ApiController < ApplicationController
   def index()
     studio_name = params[:studio]
     num_classes = params[:num_classes].to_i
-    start_time = params[:start_time]
+    start_time = params[:start_time].to_i
 
     case studio_name
     when 'yogapod'
