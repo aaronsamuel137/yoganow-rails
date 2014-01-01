@@ -19,6 +19,7 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every :sunday, :at => '1am' do # Use any day of the week or :weekend, :weekday
-  runner "YogaClass.delete_old"
+every :day, :at => '1am' do # Use any day of the week or :weekend, :weekday
+  rake data:delete_old
+  rake data:load_classes
 end
