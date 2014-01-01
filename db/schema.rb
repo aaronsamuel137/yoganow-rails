@@ -11,19 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131229200416) do
+ActiveRecord::Schema.define(version: 20140101225547) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "yoga_classes", force: true do |t|
     t.string   "name"
-    t.string   "start"
-    t.string   "end"
     t.date     "day"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "studio"
+    t.datetime "start"
+    t.datetime "end"
   end
 
 end

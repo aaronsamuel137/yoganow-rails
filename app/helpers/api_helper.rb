@@ -45,10 +45,10 @@ module ApiHelper
         cols = row.css("td")
         if cols.size > 2 and not day.nil? and day >= today
           class_time = cols[0].css("span span")
-          start_time = class_time[0].text.strip
-          end_time = class_time[1].text.delete("-").strip
+          start_time = DateTime.strptime(current_date + class_time[0].text.strip, "%Y-%m-%d %Z %H:%M %p")
+          end_time = DateTime.strptime(current_date + class_time[1].text.delete("-").strip, "%Y-%m-%d %Z %H:%M %p")
 
-          if DateTime.strptime(current_date + start_time, "%Y-%m-%d %Z %H:%M %p") >= now
+          if start_time >= now
             class_name = cols[1].text.strip
             # class_name = cols[1].css("a")[0].to_s
             if not cols[1].css("span")[0]["class"].include?('cancelled')
@@ -72,14 +72,16 @@ module ApiHelper
     end
 
     params = {:day => today, :studio => studio_data.studio_name}
-    classes = YogaClass.where("day = ? AND studio = ?", params[:day], params[:studio])
+    classes = YogaClass.where("day = ? AND studio = ?", params[:day], params[:studio]).order(start: :asc)
 
     class_list = Array.new
     class_num = 0
 
     classes.each do |clas|
-      if DateTime.strptime(current_date + clas.start, "%Y-%m-%d %Z %H:%M %p") >= begin_time
-        class_data = {'class_name' => clas.name, 'start_time' => clas.start, 'end_time' => clas.end, 'date' => clas.day}
+      if clas.start >= begin_time
+        class_start = clas.start.strftime("%l:%M %p")
+        class_end = clas.end.strftime("%l:%M %p")
+        class_data = {'class_name' => clas.name, 'start_time' => class_start, 'end_time' => class_end, 'date' => clas.day}
         class_list.push(class_data)
         class_num += 1
         if num_classes > 0 and class_num >= num_classes
