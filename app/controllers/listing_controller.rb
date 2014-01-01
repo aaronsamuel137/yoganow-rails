@@ -34,5 +34,7 @@ class ListingController < ApplicationController
       @start_time = 'at ' + time
     end
     gon.start_time = session[:start_time]
+
+    gon.studios = ApiHelper::STUDIO_NICKNAMES
   end
 end

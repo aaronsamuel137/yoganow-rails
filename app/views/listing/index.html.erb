@@ -1,8 +1,3 @@
-<% content_for :head do %>
-
-
-<% end %>
-
 <% content_for :main do %>
 
 <div class="hero-unit">
@@ -66,20 +61,10 @@
           <tbody></tbody>
         </table>
       </div>
-      <div id="no-classes">
-      </div>
       <script type="text/javascript">
-        var studios = ['yogapod', 'corepower_north', 'corepower_south', 'corepower_hill']
-        $.each(studios, function(i, studio) {
+        $.each(gon.studios, function(i, studio) {
           api_call(studio, gon.num_classes, gon.start_time);
         });
-        var t = setTimeout(function() {
-          var table = $("#class_table").find('tbody');
-          console.log(table.html())
-          if (table.html() == '') {
-            $("#no-classes").append('<p>No more classes today at supported studios</p>');
-          }
-        }, 10000);
       </script>
     </div>
   </div>

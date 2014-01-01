@@ -20,4 +20,5 @@ module StudioConstants
   YOGAPOD_DATA = StudioData.new(YOGAPOD_NAME, YOGAPOD_URL, YOGAPOD_LINK)
 
   STUDIOS = [CP_SOUTH_DATA, CP_NORTH_DATA, CP_HILL_DATA, YOGAPOD_DATA]
+  STUDIO_NICKNAMES = ['yogapod', 'corepower_north', 'corepower_south', 'corepower_hill']
 end
