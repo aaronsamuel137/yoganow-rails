@@ -63,7 +63,6 @@ module ApiHelper
   def self.get_healcode_data(studio_data, num_classes, start_time)
     now = DateTime.now.in_time_zone("Mountain Time (US & Canada)")
     current_date = now.strftime("%Y-%m-%d %Z ")
-    today = now.to_date
 
     if start_time == -1
       begin_time = now
@@ -71,20 +70,18 @@ module ApiHelper
       begin_time = DateTime.strptime(current_date + start_time.to_s, "%Y-%m-%d %Z %H")
     end
 
-    params = {:day => today, :studio => studio_data.studio_name}
+    params = {:day => now.to_date, :studio => studio_data.studio_name}
     classes = YogaClass.where("day = ? AND studio = ?", params[:day], params[:studio]).order(start: :asc)
-
     class_list = Array.new
-    class_num = 0
 
-    classes.each do |clas|
+    classes.each_with_index do |clas, i|
       if clas.start >= begin_time
         class_start = clas.start.strftime("%l:%M %p")
         class_end = clas.end.strftime("%l:%M %p")
         class_data = {'class_name' => clas.name, 'start_time' => class_start, 'end_time' => class_end, 'date' => clas.day}
         class_list.push(class_data)
-        class_num += 1
-        if num_classes > 0 and class_num >= num_classes
+
+        if num_classes > 0 and i+1 >= num_classes
           break
         end
       end
