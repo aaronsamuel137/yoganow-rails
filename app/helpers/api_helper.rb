@@ -73,15 +73,17 @@ module ApiHelper
     params = {:day => now.to_date, :studio => studio_data.studio_name}
     classes = YogaClass.where("day = ? AND studio = ?", params[:day], params[:studio]).order(start: :asc)
     class_list = Array.new
+    class_ctr = 0
 
-    classes.each_with_index do |clas, i|
+    classes.each do |clas|
       if clas.start >= begin_time
         class_start = clas.start.strftime("%l:%M %p")
         class_end = clas.end.strftime("%l:%M %p")
         class_data = {'class_name' => clas.name, 'start_time' => class_start, 'end_time' => class_end, 'date' => clas.day}
         class_list.push(class_data)
+        class_ctr += 1
 
-        if num_classes > 0 and i+1 >= num_classes
+        if num_classes > 0 and class_ctr >= num_classes
           break
         end
       end
