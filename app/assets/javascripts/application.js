@@ -15,36 +15,3 @@
 //= require turbolinks
 //= require bootstrap
 //= require_tree .
-
-var api_call = function(query, num_classes, start_time) {
-    $.getJSON('/api?studio=' + query + '&num_classes=' + num_classes + '&start_time=' + start_time, function(data) {
-        var name = data['studio_name'];
-        var classes = data['class_list'];
-        var link = data['link'];
-
-        var class_table = $("#class_table").find('tbody');
-
-        if (classes.length == 0) {
-            // class_table.append('<tr><th>No more classes at <a href="' + link +
-            //             '">' + name + '</a> today</th></tr>');
-        } else {
-            var header = '<tr><th><a target="_blank" href="' + link + '">' + name + '</th>' +
-                         '<th>Start Time</th>' +
-                         '<th>End Time</th></tr>';
-            class_table.append(header);
-
-            $.each(classes, function(index, val) {
-                var row = '<tr><td>' + val['class_name'].replace('â', '-') + '</td>' +
-                          '<td>' + val['start_time'] + '</td>' +
-                          '<td>' + val['end_time'] + '</td></tr>';
-                class_table.append(row);
-            });
-        }
-    })
-    .done(function(data) {
-        $("#loading").hide();
-    })
-    .fail(function() {
-        console.log("failed");
-    });
-}
