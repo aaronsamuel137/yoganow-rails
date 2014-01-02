@@ -16,6 +16,8 @@ class ApiController < ApplicationController
       studio = StudioConstants::CP_NORTH_DATA
     when 'corepower_hill'
       studio = StudioConstants::CP_HILL_DATA
+    else
+      puts studio_name
     end
 
     data = ApiHelper.get_healcode_data(studio, num_classes, start_time)
