@@ -9,11 +9,11 @@ module ApiHelper
     threads = []
 
     StudioConstants::STUDIOS.each do |studio|
-      thread = Thread.new {
+      thread = Thread.new do
         puts "Loading data for #{studio.studio_name}"
         ApiHelper.load_db(studio)
         puts "Done loading data for #{studio.studio_name}"
-      }
+      end
       threads.push(thread)
     end
 
