@@ -80,8 +80,12 @@
     <p>Want your studio to be added to or removed from Yoga NOW Boulder? Email
        aaron@yoganowboulder.com.</p>
   </div>
+  <h3>Quote of the day</h3>
   <div class="row">
-    <!-- Quote goes here -->
+    <blockquote>
+      <p><%= @quote.content %></p>
+      <small class="pull-right"><%= @quote.author %></small>
+    </blockquote>
   </div>
 </div>
 
