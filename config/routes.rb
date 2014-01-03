@@ -1,4 +1,6 @@
 Yoga::Application.routes.draw do
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
   root 'listing#index'
   get '/api', to: 'api#index'
   get '/events', to: 'events#events'
