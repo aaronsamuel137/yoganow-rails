@@ -1,28 +1,24 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+=== About
 
-Things you may want to cover:
+This app aims to display yoga class schedule information across multiple
+studios in Boulder. So far, supported studios are:
 
-* Ruby version
+* Yogapod
+* Corepower North Boulder
+* Corepower South Boulder
+* Corepower on the Hill
 
-* System dependencies
+=== Setup
 
-* Configuration
+This app works by scraping schedule information from various yoga studio 
+webpages and storing it in a database. On the deployed version, this is
+set up to run every night. To manually scrape web pages for testing, run:
 
-* Database creation
+  $rake data:fetch
 
-* Database initialization
+To clear old schedule data from the database, run:
 
-* How to run the test suite
+  $rake data:delete_old
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
