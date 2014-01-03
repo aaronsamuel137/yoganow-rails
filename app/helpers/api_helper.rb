@@ -57,7 +57,7 @@ module ApiHelper
           if start_time >= now
             class_name = cols[1].text.strip
             # class_name = cols[1].css("a")[0].to_s
-            if !cols[1].css('span')[0]['class'].include?('cancelled')
+            unless cols[1].css('span')[0]['class'].include?('cancelled')
               YogaClass.create(
                 name: class_name,
                 start: start_time,
