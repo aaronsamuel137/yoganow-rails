@@ -1,6 +1,6 @@
 <% content_for :main do %>
 
-<div class="hero-unit">
+<div class="jumbotron" style="text-align: center;">
   <h1>Yoga NOW Boulder</h1>
 </div>
 
@@ -76,12 +76,8 @@
        one the trouble of having to search through many studio sites
        just to find an interesting class. As of now, only a few studios
        are supported, but there are plans to support more and more as time goes on.</p>
-    <br>
-    <p>Want your studio to be added to or removed from Yoga NOW Boulder? Email
-       aaron@yoganowboulder.com.</p>
-  </div>
-  <h3>Quote of the day</h3>
-  <div class="row">
+
+    <%= image_tag 'divider.png', width: '100%' %>
     <blockquote>
       <p><%= sanitize @quote.content, :tags => ['br'] %></p>
       <small class="pull-right"><%= @quote.author %></small>
