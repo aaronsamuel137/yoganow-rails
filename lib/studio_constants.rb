@@ -19,6 +19,12 @@ module StudioConstants
   YOGAPOD_LINK = 'http://yogapodcommunity.com/boulder/schedule'
   YOGAPOD_DATA = StudioData.new(YOGAPOD_NAME, YOGAPOD_URL, YOGAPOD_LINK)
 
-  STUDIOS = [CP_SOUTH_DATA, CP_NORTH_DATA, CP_HILL_DATA, YOGAPOD_DATA]
-  STUDIO_NICKNAMES = %w(yogapod corepower_north corepower_south corepower_hill)
+  HEALCODE_STUDIOS = [CP_SOUTH_DATA, CP_NORTH_DATA, CP_HILL_DATA, YOGAPOD_DATA]
+
+  YOGA_WORKSHOP_NAME = 'Yoga Workshop'
+  YOGA_WORKSHOP_URL = 'http://ws.yogaworkshop.com/cal?callback=jQuery20206711205308577529_1388441277502&_=1388441277503'
+  YOGA_WORKSHOP_LINK = 'http://yogaworkshop.com/schedule/class-schedule/'
+  YOGA_WORKSHOP_DATA = StudioData.new(YOGA_WORKSHOP_NAME, YOGA_WORKSHOP_URL, YOGA_WORKSHOP_LINK)
+
+  STUDIO_NICKNAMES = %w(yogapod corepower_north corepower_south corepower_hill yogaworkshop)
 end

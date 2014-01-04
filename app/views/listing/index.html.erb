@@ -83,7 +83,7 @@
   <h3>Quote of the day</h3>
   <div class="row">
     <blockquote>
-      <p><%= @quote.content %></p>
+      <p><%= sanitize @quote.content, :tags => ['br'] %></p>
       <small class="pull-right"><%= @quote.author %></small>
     </blockquote>
   </div>

@@ -8,21 +8,70 @@ module ApiHelper
   def self.load_classes
     threads = []
 
-    StudioConstants::STUDIOS.each do |studio|
+    StudioConstants::HEALCODE_STUDIOS.each do |studio|
       thread = Thread.new do
         puts "Loading data for #{studio.studio_name}"
-        ApiHelper.load_db(studio)
+        ApiHelper.load_healcode(studio)
         puts "Done loading data for #{studio.studio_name}"
       end
       threads.push(thread)
     end
+
+    thread = Thread.new do
+      puts "Loading data for Yoga Workshop"
+      ApiHelper.load_yogaworkshop(StudioConstants::YOGA_WORKSHOP_DATA)
+      puts "Done loading data for Yoga Workshop"
+    end
+    threads.push(thread)
 
     threads.each do |thread|
       thread.join
     end
   end
 
-  def self.load_db(studio_data)
+  def self.load_yogaworkshop(studio_data)
+    now = DateTime.now.in_time_zone('Mountain Time (US & Canada)')
+    current_date = now.strftime("%Y-%m-%d %Z ")
+    current_month = now.strftime("%Y-%m %Z ")
+    today = now.to_date
+
+    url = studio_data.data_url
+    uri = URI(url)
+    page = Nokogiri::HTML(open(url)).css("p")[0].text[41..-3]
+    h = JSON.load(page)
+    data = h["html"]
+
+    day = nil
+    start_time = nil
+    end_time = nil
+
+    data.each_line do |line|
+      if line.include?('<h3>')
+        day = Date.strptime(current_month + line, "%Y-%m %Z <h3>%A (%b %d)</h3>")
+      end
+
+      if day == today
+        if match = line.match(/<div class="schedule_time">\s*([0-9:]+)\s*&#8211;\s*([0-9:]+)\s*([amp]+)/)
+          start_time_str, end_time_str, am_pm = match.captures
+          start_time = DateTime.strptime(current_date + start_time_str + am_pm, "%Y-%m-%d %Z %l:%M%P")
+          end_time = DateTime.strptime(current_date + end_time_str + am_pm, "%Y-%m-%d %Z %l:%M%P")
+
+        elsif line =~ /<div class="class_type">([\w\s-]*)/
+          class_name = $1
+
+          YogaClass.create(
+            name: class_name,
+            start: start_time,
+            end: end_time,
+            day: day,
+            studio: studio_data.studio_name
+          )
+        end
+      end
+    end
+  end
+
+  def self.load_healcode(studio_data)
     now = DateTime.now.in_time_zone('Mountain Time (US & Canada)')
     current_date = now.strftime("%Y-%m-%d %Z ")
     tz = now.strftime("%Z")
@@ -43,7 +92,7 @@ module ApiHelper
       # get the class times and names from other rows
       else
         cols = row.css('td')
-        if cols.size > 2 && !day.nil? && day >= today
+        if cols.size > 2 && !day.nil? && day == today
           class_time = cols[0].css('span span')
           start_time = DateTime.strptime(
             current_date + class_time[0].text.strip,
@@ -72,7 +121,7 @@ module ApiHelper
     end
   end
 
-  def self.get_healcode_data(studio_data, num_classes, start_time)
+  def self.get_studio_data(studio_data, num_classes, start_time)
     now = DateTime.now.in_time_zone('Mountain Time (US & Canada)')
     current_date = now.strftime("%Y-%m-%d %Z ")
 
