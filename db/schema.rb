@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140103182512) do
+ActiveRecord::Schema.define(version: 20140106171001) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,16 @@ ActiveRecord::Schema.define(version: 20140103182512) do
   create_table "quotes", force: true do |t|
     t.string   "author"
     t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "sutras", force: true do |t|
+    t.string   "verse"
+    t.text     "devanagari"
+    t.text     "transliteration"
+    t.text     "english"
+    t.text     "link"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

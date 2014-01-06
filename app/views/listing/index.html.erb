@@ -79,8 +79,13 @@
 
     <%= image_tag 'divider.png', width: '100%' %>
     <blockquote>
-      <p><%= sanitize @quote.content, :tags => ['br'] %></p>
-      <small class="pull-right"><%= @quote.author %></small>
+      <br>
+      <p><%= @quote.devanagari %><br><br>
+         <%= @quote.transliteration %><br><br>
+         <%= @quote.english %><br><br>
+
+      </p>
+      <small class="pull-right"><a target="_blank" href="<%= @quote.link %>">Yoga Sutras <%= @quote.verse %></a></small>
     </blockquote>
   </div>
 </div>

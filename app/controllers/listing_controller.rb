@@ -37,6 +37,6 @@ class ListingController < ApplicationController
 
     gon.studios = ApiHelper::STUDIO_NICKNAMES
 
-    @quote = Quote.first(:order => "RANDOM()")
+    @quote = Sutra.first(:order => "RANDOM()")
   end
 end

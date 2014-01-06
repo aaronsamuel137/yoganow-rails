@@ -24,4 +24,13 @@ namespace :quote do
       end
     end
   end
+
+  desc "Add quotes from yoga sutras to database from ashtanga website"
+  task :sutra => :environment do
+    (1..4).each do |chapter|
+      url = "http://www.ashtangayoga.info/source-texts/yoga-sutra-patanjali/chapter-#{chapter}/"
+      puts url
+      TaskHelper.get_yoga_sutras(url, chapter)
+    end
+  end
 end

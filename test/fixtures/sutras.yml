@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  verse: MyString
+  devanagari: MyText
+  transliteration: MyText
+  english: MyText
+  link: MyText
+
+two:
+  verse: MyString
+  devanagari: MyText
+  transliteration: MyText
+  english: MyText
+  link: MyText
