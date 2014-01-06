@@ -16,6 +16,8 @@ class ApiController < ApplicationController
       studio = StudioConstants::CP_NORTH_DATA
     when 'corepower_hill'
       studio = StudioConstants::CP_HILL_DATA
+    when 'yogaloft'
+      studio = StudioConstants::YOGALOFT_DATA
     when 'yogaworkshop'
       studio = StudioConstants::YOGA_WORKSHOP_DATA
     else

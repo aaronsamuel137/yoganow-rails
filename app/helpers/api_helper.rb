@@ -6,27 +6,15 @@ module ApiHelper
   include StudioConstants
 
   def self.load_classes
-    threads = []
-
     StudioConstants::HEALCODE_STUDIOS.each do |studio|
-      thread = Thread.new do
-        puts "Loading data for #{studio.studio_name}"
-        ApiHelper.load_healcode(studio)
-        puts "Done loading data for #{studio.studio_name}"
-      end
-      threads.push(thread)
+      puts "Loading data for #{studio.studio_name}"
+      ApiHelper.load_healcode(studio)
+      puts "Done loading data for #{studio.studio_name}"
     end
 
-    thread = Thread.new do
-      puts "Loading data for Yoga Workshop"
-      ApiHelper.load_yogaworkshop(StudioConstants::YOGA_WORKSHOP_DATA)
-      puts "Done loading data for Yoga Workshop"
-    end
-    threads.push(thread)
-
-    threads.each do |thread|
-      thread.join
-    end
+    puts "Loading data for Yoga Workshop"
+    ApiHelper.load_yogaworkshop(StudioConstants::YOGA_WORKSHOP_DATA)
+    puts "Done loading data for Yoga Workshop"
   end
 
   def self.load_yogaworkshop(studio_data)
@@ -56,7 +44,7 @@ module ApiHelper
           start_time = DateTime.strptime(current_date + start_time_str + am_pm, "%Y-%m-%d %Z %l:%M%P")
           end_time = DateTime.strptime(current_date + end_time_str + am_pm, "%Y-%m-%d %Z %l:%M%P")
 
-        elsif line =~ /<div class="class_type">([\w\s-]*)/
+        elsif line =~ /<div class="class_type">([\w\s\*&-]*)/
           class_name = $1
 
           YogaClass.create(
