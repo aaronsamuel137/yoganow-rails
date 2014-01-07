@@ -22,8 +22,25 @@
   /*overflow: auto;*/
 }
 
-.buttons {
+.buttons-holder {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.table-button {
+  /*margin: auto;*/
+  /*flex-basis: 0;*/
+  /*flex-grow: 1;*/
+  flex-grow: 1;
+  flex-basis: 0;
+
+}
+
+.info {
+  font-size: large;
+  font-family: cursive;
+  text-align: center;
 }

@@ -8,9 +8,9 @@
   <div class="col-md-8">
     <div id="listing" class="well">
       <h3 class="text-center">Classes Happening NOW</h3>
-      <div class="row buttons">
-        <div class="btn-group" style="float: right; display: flex;">
-          <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Number of Classes Displayed <span class="caret"></span>
+      <div class="row buttons-holder">
+        <div class="btn-group table-button">
+          <button data-toggle="dropdown" class="btn btn-primary btn-block dropdown-toggle">Number of Classes Displayed <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
             <li><a href="#" onclick="window.location.href='?num_classes=1';">1</a></li>
@@ -21,8 +21,8 @@
           </ul>
         </div>
 
-        <div class="btn-group" style="float: right;">
-          <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Starting Time <span class="caret"></span>
+        <div class="btn-group table-button">
+          <button data-toggle="dropdown" class="btn btn-primary btn-block dropdown-toggle">Starting Time <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
             <li><a href="#" onclick="window.location.href='?start_time=-1';">NOW!</a></li>
@@ -53,12 +53,7 @@
       </div>
       <div class="table-holder">
         <table id="class_table" class="table table-striped">
-          <thead>
-            <tr>
-              <th>Displaying <%= @num_classes %> from each studio, starting <%= @start_time %></th>
-              <th></th><th></th>
-            </tr>
-          </thead>
+          <caption class="info">Displaying <%= @num_classes %> from each studio, starting <%= @start_time %></caption>
           <tbody></tbody>
         </table>
       </div>
