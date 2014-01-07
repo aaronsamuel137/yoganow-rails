@@ -31,5 +31,10 @@ module StudioConstants
   YOGA_WORKSHOP_LINK = 'http://yogaworkshop.com/schedule/class-schedule/'
   YOGA_WORKSHOP_DATA = StudioData.new(YOGA_WORKSHOP_NAME, YOGA_WORKSHOP_URL, YOGA_WORKSHOP_LINK)
 
+  STUDIO_BE_NAME = 'Studio Be'
+  STUDIO_BE_URL = 'http://www.studiobeyoga.com/pages/V2_schedule_fees.php?print=false'
+  STUDIO_BE_LINK = 'http://www.studiobeyoga.com/pages/V2_schedule_fees.php?print=false'
+  STUDIO_BE_DATA = StudioData.new(STUDIO_BE_NAME, STUDIO_BE_URL, STUDIO_BE_LINK)
+
   STUDIO_NICKNAMES = %w(yogapod corepower_north corepower_south corepower_hill yogaloft yogaworkshop)
 end

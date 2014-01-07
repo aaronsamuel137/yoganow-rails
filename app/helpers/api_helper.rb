@@ -109,6 +109,51 @@ module ApiHelper
     end
   end
 
+  def self.load_studio_be(studio_data)
+    now = DateTime.now.in_time_zone('Mountain Time (US & Canada)')
+    current_day = now.strftime("%A")
+
+    uri = URI(studio_data.data_url)
+    page = Nokogiri::HTML(open(uri))
+    rows = page.css('tr')
+    day = nil
+
+    rows.each do |row|
+      # get the current date from header rows
+      if row.css('td img').size > 0
+        day = row.css('td img')[0]['alt'].split[0]
+
+      # get the class times and names from other rows
+      elsif row.css('td').size > 3
+        cols = row.css('td')
+        time = cols[0].text
+        name = cols[2].text
+
+        start_time = DateTime.strptime(
+          current_date + class_time[0].text.strip,
+          "%Y-%m-%d %Z %H:%M %p"
+        )
+        end_time = DateTime.strptime(
+          current_date + class_time[1].text.delete('-').strip,
+          "%Y-%m-%d %Z %H:%M %p"
+        )
+
+        if start_time >= now
+          class_name = cols[1].text.strip
+          unless cols[1].css('span')[0]['class'].include?('cancelled')
+            YogaClass.create(
+              name: class_name,
+              start: start_time,
+              end: end_time,
+              day: day,
+              studio: studio_data.studio_name
+            )
+          end
+        end
+      end
+    end
+  end
+
   def self.get_studio_data(studio_data, num_classes, start_time)
     now = DateTime.now.in_time_zone('Mountain Time (US & Canada)')
     current_date = now.strftime("%Y-%m-%d %Z ")

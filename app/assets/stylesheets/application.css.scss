@@ -21,3 +21,9 @@
 #listing {
   /*overflow: auto;*/
 }
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
