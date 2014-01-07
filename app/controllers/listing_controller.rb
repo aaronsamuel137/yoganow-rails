@@ -30,7 +30,7 @@ class ListingController < ApplicationController
     elsif session[:start_time] == -1
       @start_time = 'now'
     else
-      time = DateTime.strptime(session[:start_time].to_s, "%H").strftime("%I:%M %p")
+      time = DateTime.strptime(session[:start_time].to_s, "%H").strftime("%l:%M %p")
       @start_time = 'at ' + time
     end
     gon.start_time = session[:start_time]
