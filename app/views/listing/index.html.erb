@@ -67,10 +67,9 @@
   <div class="col-md-4">
     <h3>About</h3>
     <p class="lead">Yoga NOW Boulder aims to display all the yoga classes
-       happening in Boulder within the next few hours. This spares
+       happening in Boulder within the next few hours, or optionally for the rest of the day. This spares
        one the trouble of having to search through many studio sites
-       just to find an interesting class. As of now, only a few studios
-       are supported, but there are plans to support more and more as time goes on.</p>
+       just to find an interesting class. There are plans to support more studios as time goes on.</p>
 
     <%= image_tag 'divider.png', width: '100%' %>
     <blockquote>
@@ -78,7 +77,6 @@
       <p><%= @quote.devanagari %><br><br>
          <%= @quote.transliteration %><br><br>
          <%= @quote.english %><br><br>
-
       </p>
       <small class="pull-right"><a target="_blank" href="<%= @quote.link %>">Yoga Sutras <%= @quote.verse %></a></small>
     </blockquote>
