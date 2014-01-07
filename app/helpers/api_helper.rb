@@ -15,6 +15,10 @@ module ApiHelper
     puts "Loading data for Yoga Workshop"
     ApiHelper.load_yogaworkshop(StudioConstants::YOGA_WORKSHOP_DATA)
     puts "Done loading data for Yoga Workshop"
+
+    puts "Loading data for Studio Be"
+    ApiHelper.load_studio_be(StudioConstants::STUDIO_BE_DATA)
+    puts "Done loading data for Studio Be"
   end
 
   def self.load_yogaworkshop(studio_data)
@@ -112,6 +116,8 @@ module ApiHelper
   def self.load_studio_be(studio_data)
     now = DateTime.now.in_time_zone('Mountain Time (US & Canada)')
     current_day = now.strftime("%A")
+    current_date = now.strftime("%Y-%m-%d %Z ")
+    today = now.to_date
 
     uri = URI(studio_data.data_url)
     page = Nokogiri::HTML(open(uri))
@@ -123,32 +129,38 @@ module ApiHelper
       if row.css('td img').size > 0
         day = row.css('td img')[0]['alt'].split[0]
 
-      # get the class times and names from other rows
-      elsif row.css('td').size > 3
+      elsif day == current_day and row.css('td').size > 3
         cols = row.css('td')
         time = cols[0].text
-        name = cols[2].text
+        class_name = cols[2].text
 
-        start_time = DateTime.strptime(
-          current_date + class_time[0].text.strip,
-          "%Y-%m-%d %Z %H:%M %p"
-        )
-        end_time = DateTime.strptime(
-          current_date + class_time[1].text.delete('-').strip,
-          "%Y-%m-%d %Z %H:%M %p"
-        )
+        if match = time.match(/([0-9:]+)-([0-9:]+)\s([amp]+)/)
+          start_time_str, end_time_str, am_pm = match.captures
 
-        if start_time >= now
-          class_name = cols[1].text.strip
-          unless cols[1].css('span')[0]['class'].include?('cancelled')
-            YogaClass.create(
-              name: class_name,
-              start: start_time,
-              end: end_time,
-              day: day,
-              studio: studio_data.studio_name
-            )
+          if start_time_str.size < 3
+            start_time_str += ':00'
           end
+
+          if end_time_str.size < 3
+            end_time_str += ':00'
+          end
+
+          start_time = DateTime.strptime(
+            current_date + start_time_str + am_pm,
+            "%Y-%m-%d %Z %H:%M%p"
+          )
+          end_time = DateTime.strptime(
+            current_date + end_time_str + am_pm,
+            "%Y-%m-%d %Z %H:%M%p"
+          )
+
+          YogaClass.create(
+            name: class_name,
+            start: start_time,
+            end: end_time,
+            day: today,
+            studio: studio_data.studio_name
+          )
         end
       end
     end
@@ -186,6 +198,5 @@ module ApiHelper
     data = {'studio_name' => studio_data.studio_name,
             'class_list' => class_list,
             'link' => studio_data.link_url}
-    data
   end
 end

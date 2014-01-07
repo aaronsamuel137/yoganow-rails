@@ -20,6 +20,8 @@ class ApiController < ApplicationController
       studio = StudioConstants::YOGALOFT_DATA
     when 'yogaworkshop'
       studio = StudioConstants::YOGA_WORKSHOP_DATA
+    when 'studio_be'
+      studio = StudioConstants::STUDIO_BE_DATA
     else
       puts studio_name
     end
