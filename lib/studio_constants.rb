@@ -36,5 +36,11 @@ module StudioConstants
   STUDIO_BE_LINK = 'http://www.studiobeyoga.com/pages/V2_schedule_fees.php?print=false'
   STUDIO_BE_DATA = StudioData.new(STUDIO_BE_NAME, STUDIO_BE_URL, STUDIO_BE_LINK)
 
-  STUDIO_NICKNAMES = %w(yogapod corepower_north corepower_south corepower_hill yogaloft yogaworkshop studio_be)
+  ADI_SHAKTI_NAME = 'Adi Shakti'
+  # ADI_SHAKTI_URL = 'https://www.google.com/calendar/embed?showTitle=0&showNav=0&showPrint=0&showTabs=0&showCalendars=0&mode=AGENDA&height=600&wkst=1&bgcolor=%23FFFFFF&src=74b03lpbo956gtpdpjjj2ak0d0%40group.calendar.google.com&color=%2323164E&src=rachel.zelaya%40gmail.com&color=%23182C57&ctz=America%2FDenver'
+  ADI_SHAKTI_URL = 'https://www.google.com/calendar/embed?showCalendars=0&showTz=0&mode=WEEK&height=600&wkst=1&bgcolor=%23FFFFFF&src=74b03lpbo956gtpdpjjj2ak0d0%40group.calendar.google.com&color=%2323164E&src=rachel.zelaya%40gmail.com&color=%23182C57&ctz=America%2FDenver'
+  ADI_SHAKTI_LINK = 'http://www.adishakticenter.com/kundalini-yoga-class-schedule'
+  ADI_SHAKTI_DATA = StudioData.new(ADI_SHAKTI_NAME, ADI_SHAKTI_URL, ADI_SHAKTI_LINK)
+
+  STUDIO_NICKNAMES = %w(yogapod corepower_north corepower_south corepower_hill yogaloft yogaworkshop studio_be adi_shakti)
 end

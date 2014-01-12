@@ -9,7 +9,7 @@
     link = data['link']
     class_table = $('#class_table').find('tbody')
     unless classes.length is 0
-      header = '<tr><th><a target="_blank" href="' + link + '">' + name + '</th>' + '<th>Start Time</th>' + '<th>End Time</th></tr>'
+      header = '<tr><th class="col-sm-8"><a target="_blank" href="' + link + '">' + name + '</th>' + '<th>Start Time</th>' + '<th>End Time</th></tr>'
       class_table.append header
       $.each classes, (index, val) ->
         row = '<tr><td>' + val['class_name'].replace('â', '-') + '</td>' + '<td>' + val['start_time'] + '</td>' + '<td>' + val['end_time'] + '</td></tr>'

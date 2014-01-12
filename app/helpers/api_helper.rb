@@ -19,6 +19,10 @@ module ApiHelper
     puts "Loading data for Studio Be"
     ApiHelper.load_studio_be(StudioConstants::STUDIO_BE_DATA)
     puts "Done loading data for Studio Be"
+
+    puts "Loading data for Adi Shakti"
+    ApiHelper.load_adi_shakti(StudioConstants::ADI_SHAKTI_DATA)
+    puts "Done loading data for Adi Shakti"
   end
 
   def self.load_yogaworkshop(studio_data)
@@ -56,6 +60,42 @@ module ApiHelper
             start: start_time,
             end: end_time,
             day: day,
+            studio: studio_data.studio_name
+          )
+        end
+      end
+    end
+  end
+
+  def self.load_adi_shakti(studio_data)
+    now = DateTime.now.in_time_zone('Mountain Time (US & Canada)')
+    today = now.to_date
+
+    url = studio_data.data_url
+    uri = URI(url)
+    data = Nokogiri::HTML(open(uri)).css('script')[2].text[33..-4]
+    json = JSON.load(data)
+    cids = json['cids']
+
+    cids.each do |cid|
+      entries = cid[1]['gdata']['feed']['entry']
+
+      entries.each do |entry|
+        status = entry['gd$eventStatus']['value']
+        start = entry['gd$when'][0]['startTime']
+        start_dt = DateTime.strptime(start, "%Y-%m-%dT%H:%M:%S.000%Z")
+        start_date = start_dt.to_date
+
+        if start_date == today && status.include?('confirmed')
+          class_name = entry['title']['$t']
+          class_end = entry['gd$when'][0]['endTime']
+          end_dt = DateTime.strptime(class_end, "%Y-%m-%dT%H:%M:%S.000%Z")
+
+          YogaClass.create(
+            name: class_name,
+            start: start_dt,
+            end: end_dt,
+            day: start_date,
             studio: studio_data.studio_name
           )
         end
