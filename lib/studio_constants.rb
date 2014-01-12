@@ -24,7 +24,12 @@ module StudioConstants
   YOGALOFT_LINK = 'http://www.yogaloftboulder.com/schedule'
   YOGALOFT_DATA = StudioData.new(YOGALOFT_NAME, YOGALOFT_URL, YOGALOFT_LINK)
 
-  HEALCODE_STUDIOS = [CP_SOUTH_DATA, CP_NORTH_DATA, CP_HILL_DATA, YOGAPOD_DATA, YOGALOFT_DATA]
+  RADIANCE_NAME = 'Radiance Power Yoga'
+  RADIANCE_URL = 'https://www.healcode.com/widgets/schedules/print/7s4618nkp5'
+  RADIANCE_LINK = 'http://radiancepoweryoga.com/faq/schedule'
+  RADIANCE_DATA = StudioData.new(RADIANCE_NAME, RADIANCE_URL, RADIANCE_LINK)
+
+  HEALCODE_STUDIOS = [CP_SOUTH_DATA, CP_NORTH_DATA, CP_HILL_DATA, YOGAPOD_DATA, YOGALOFT_DATA, RADIANCE_DATA]
 
   YOGA_WORKSHOP_NAME = 'Yoga Workshop'
   YOGA_WORKSHOP_URL = 'http://ws.yogaworkshop.com/cal?callback=jQuery20206711205308577529_1388441277502&_=1388441277503'
@@ -42,5 +47,5 @@ module StudioConstants
   ADI_SHAKTI_LINK = 'http://www.adishakticenter.com/kundalini-yoga-class-schedule'
   ADI_SHAKTI_DATA = StudioData.new(ADI_SHAKTI_NAME, ADI_SHAKTI_URL, ADI_SHAKTI_LINK)
 
-  STUDIO_NICKNAMES = %w(yogapod corepower_north corepower_south corepower_hill yogaloft yogaworkshop studio_be adi_shakti)
+  STUDIO_NICKNAMES = %w(yogapod corepower_north corepower_south corepower_hill yogaloft yogaworkshop studio_be adi_shakti radiance)
 end
