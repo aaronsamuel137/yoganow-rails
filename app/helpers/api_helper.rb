@@ -109,8 +109,9 @@ module ApiHelper
     tz = now.strftime("%Z")
     today = now.to_date
 
-    uri = URI(studio_data.data_url)
-    page = Nokogiri::HTML(open(uri))
+    # uri = URI(studio_data.data_url)
+    page_html = open(studio_data.data_url)
+    page = Nokogiri::HTML(page_html.read)
     rows = page.css('tr')
     day = nil
 
@@ -134,19 +135,27 @@ module ApiHelper
             current_date + class_time[1].text.delete('-').strip,
             "%Y-%m-%d %Z %H:%M %p"
           )
+          class_name = cols[1].text.strip
 
-          if start_time >= now
-            class_name = cols[1].text.strip
-            # class_name = cols[1].css("a")[0].to_s
-            unless cols[1].css('span')[0]['class'].include?('cancelled')
-              YogaClass.create(
-                name: class_name,
-                start: start_time,
-                end: end_time,
-                day: day,
-                studio: studio_data.studio_name
-              )
-            end
+          begin
+            description_url = cols[1].css("a")[0]['data-url']
+            html = open(description_url)
+            description_page = Nokogiri::HTML(html.read)
+            description = description_page.css('div.class_description')[0].text
+          rescue Exception => e
+            puts "Error: #{e}, when getting description for class #{class_name} at studio #{studio_data.studio_name}"
+            description = ''
+          end
+
+          unless cols[1].css('span')[0]['class'].include?('cancelled')
+            YogaClass.create(
+              name: class_name,
+              start: start_time,
+              end: end_time,
+              day: day,
+              description: description,
+              studio: studio_data.studio_name
+            )
           end
         end
       end
@@ -225,7 +234,11 @@ module ApiHelper
       if clas.start >= begin_time
         class_start = clas.start.strftime("%l:%M %p")
         class_end = clas.end.strftime("%l:%M %p")
-        class_data = {'class_name' => clas.name, 'start_time' => class_start, 'end_time' => class_end, 'date' => clas.day}
+        class_data = {'class_name' => clas.name,
+                      'start_time' => class_start,
+                      'end_time' => class_end,
+                      'date' => clas.day,
+                      'description' => clas.description}
         class_list.push(class_data)
         class_ctr += 1
 
