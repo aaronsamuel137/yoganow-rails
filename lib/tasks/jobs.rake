@@ -10,6 +10,22 @@ namespace :data do
     YogaClass.delete_old()
     puts 'deleted'
   end
+
+  desc "Get geo coordinates of studios with google api"
+  task :get_geodata => :environment do
+    endpoint = 'http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address='
+
+    StudioConstants::STUDIO_ADDRESSES.each do |k, v|
+      url = endpoint + v.gsub(/\s/, '+')
+      data = open(url)
+      json = JSON.load(data)
+      location = json['results'][0]['geometry']['location']
+      lat = location['lat']
+      lng = location['lng']
+
+      StudioLocations.create(name: k, lat: lat, lng: lng)
+    end
+  end
 end
 
 namespace :quote do

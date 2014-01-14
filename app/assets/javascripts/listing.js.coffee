@@ -20,8 +20,6 @@
         class_table.append row
 
         if val['description']
-          console.log("loaded data for #{val['class_name']} with id #{id}!")
-
           $('#' + id).click ->
             mq = window.matchMedia( "(min-width: 500px)" )
             if mq.matches
@@ -58,3 +56,24 @@
     $('#loading').hide()
   ).fail ->
     console.log 'failed'
+
+showPosition = (position) ->
+  lat = position.coords.latitude
+  lng = position.coords.longitude
+
+  lowest = Infinity
+  for loc in gon.locations
+    distance = Math.pow(lat - loc.lat, 2) + Math.pow(lng - loc.lng, 2)
+    if distance < lowest
+      lowest = distance
+      studio = loc.name
+  $('#location-div').append "<br>Closest studio is #{studio}"
+
+handleError = ->
+  console.log "Error getting position"
+
+$(document).ready ->
+  if navigator.geolocation
+    navigator.geolocation.getCurrentPosition showPosition, handleError
+  else
+    console.log "Geolocation is not supported by this browser."

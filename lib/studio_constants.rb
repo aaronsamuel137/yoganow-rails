@@ -48,4 +48,14 @@ module StudioConstants
   ADI_SHAKTI_DATA = StudioData.new(ADI_SHAKTI_NAME, ADI_SHAKTI_URL, ADI_SHAKTI_LINK)
 
   STUDIO_NICKNAMES = %w(yogapod corepower_north corepower_south corepower_hill yogaloft yogaworkshop studio_be adi_shakti radiance)
+
+  STUDIO_ADDRESSES = {YOGAPOD_NAME => '1750 29th St, Boulder, CO 80301',
+                      CP_NORTH_NAME => '3280 28th St, Boulder, CO 80301',
+                      CP_SOUTH_NAME => '645 27th Way, Boulder, CO 80305',
+                      CP_HILL_NAME => '1129 13th St, Boulder, CO 80302',
+                      YOGALOFT_NAME => '633 S Broadway St, Boulder, CO 80305',
+                      YOGA_WORKSHOP_NAME => '2020 21st St, Boulder, CO 80304',
+                      STUDIO_BE_NAME => '2077 30th St, Boulder, CO 80301',
+                      ADI_SHAKTI_NAME => '6717 Valmont Rd, Boulder, CO',
+                      RADIANCE_NAME => ' 2704 28th St, Boulder, CO 80301'}
 end
