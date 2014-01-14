@@ -18,23 +18,29 @@
         id = name.replace(/\s/g, '') + id_num
         row = '<tr><td><a id="' + id + '" href="javaScript:void(0);">' + val['class_name'] + '</a></td><td>' + val['start_time'] + '</td><td>' + val['end_time'] + '</td></tr>'
         class_table.append row
-        windowHeight = $(window).height();
-        dialogHeight = windowHeight * 0.5;
-        windowWidth = $(window).width();
-        dialogWidth = windowWidth * 0.4;
 
         if val['description']
           console.log("loaded data for #{val['class_name']} with id #{id}!")
 
           $('#' + id).click ->
+            mq = window.matchMedia( "(min-width: 500px)" )
+            if mq.matches
+              windowHeight = $(window).height()
+              dialogHeight = windowHeight * 0.2
+              windowWidth = $(window).width()
+              dialogWidth = windowWidth * 0.4
+            else
+              windowHeight = $(window).height()
+              windowWidth = $(window).width()
+
             newDiv = $(document.createElement('div'))
             newDiv.html "<p>#{val['description']}</p>"
             newDiv.addClass "description-popup"
             newDiv.dialog
+              minHeight: dialogHeight
+              minWidth: dialogWidth
               closeOnEscape: true
               title: val['class_name']
-              maxHeight: dialogHeight
-              width: dialogWidth
               modal: true
               buttons: [
                 text: "Ok"
