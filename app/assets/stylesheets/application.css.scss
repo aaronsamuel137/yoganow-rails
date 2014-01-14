@@ -38,6 +38,11 @@
   text-align: center;
 }
 
+.description-popup {
+  margin: 30px;
+  overflow: scroll;
+}
+
 @media (max-width: 500px) {
   .buttons-holder {
     flex-direction: column;

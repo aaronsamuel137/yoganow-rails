@@ -5,6 +5,7 @@ Yoga::Application.routes.draw do
   get '/api', to: 'api#index'
   get '/events', to: 'events#events'
   get '/contact', to: 'static#contact'
+  get '/test', to: 'static#test'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
