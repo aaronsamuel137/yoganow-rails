@@ -109,7 +109,6 @@ module ApiHelper
     tz = now.strftime("%Z")
     today = now.to_date
 
-    # uri = URI(studio_data.data_url)
     page_html = open(studio_data.data_url)
     page = Nokogiri::HTML(page_html.read)
     rows = page.css('tr')

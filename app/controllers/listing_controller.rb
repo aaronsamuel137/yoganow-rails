@@ -35,7 +35,6 @@ class ListingController < ApplicationController
     end
     gon.start_time = session[:start_time]
 
-    gon.studios = ApiHelper::STUDIO_NICKNAMES
     gon.locations = StudioLocations.all
 
     @quote = Sutra.first(:order => "RANDOM()")

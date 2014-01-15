@@ -58,4 +58,6 @@ module StudioConstants
                       STUDIO_BE_NAME => '2077 30th St, Boulder, CO 80301',
                       ADI_SHAKTI_NAME => '6717 Valmont Rd, Boulder, CO',
                       RADIANCE_NAME => ' 2704 28th St, Boulder, CO 80301'}
+
+  STUDIOS = [YOGAPOD_DATA, CP_NORTH_DATA, CP_SOUTH_DATA, CP_HILL_DATA, YOGALOFT_DATA, YOGA_WORKSHOP_DATA, STUDIO_BE_DATA, RADIANCE_DATA, ADI_SHAKTI_DATA]
 end
