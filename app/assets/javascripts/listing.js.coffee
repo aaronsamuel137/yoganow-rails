@@ -2,61 +2,58 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-@api_call = (num_classes, start_time) ->
-  $.getJSON('/api?num_classes=' + num_classes + '&start_time=' + start_time, (data) ->
-    for studio in data
-      name = studio['studio_name']
-      classes = studio['class_list']
-      link = studio['link']
+writeTable = (data) ->
+  console.log data
+  for studio in data
+    name = studio['studio_name']
+    classes = studio['class_list']
+    link = studio['link']
 
-      class_table = $('#class_table').find('tbody')
-      id_num = 1
-      unless classes.length is 0
-        header = '<tr><th class="col-sm-8"><a target="_blank" href="' + link + '">' + name + '</th>' + '<th>Start Time</th>' + '<th>End Time</th></tr>'
-        class_table.append header
+    class_table = $('#class_table').find('tbody')
+    id_num = 1
+    unless classes.length is 0
+      header = '<tr><th class="col-sm-8"><a target="_blank" href="' + link + '">' + name + '</th>' + '<th>Start Time</th>' + '<th>End Time</th></tr>'
+      class_table.append header
 
-        $.each classes, (index, val) ->
-          id = name.replace(/\s/g, '') + id_num
-          row = '<tr><td><a id="' + id + '" href="javaScript:void(0);">' + val['class_name'] + '</a></td><td>' + val['start_time'] + '</td><td>' + val['end_time'] + '</td></tr>'
-          class_table.append row
+      $.each classes, (index, val) ->
+        id = name.replace(/\s/g, '') + id_num
+        row = '<tr><td><a id="' + id + '" href="javaScript:void(0);">' + val['class_name'] + '</a></td><td>' + val['start_time'] + '</td><td>' + val['end_time'] + '</td></tr>'
+        class_table.append row
 
-          if val['description']
-            $('#' + id).click ->
-              mq = window.matchMedia( "(min-width: 500px)" )
-              if mq.matches
-                windowHeight = $(window).height()
-                dialogHeight = windowHeight * 0.2
-                windowWidth = $(window).width()
-                dialogWidth = windowWidth * 0.4
-              else
-                windowHeight = $(window).height()
-                windowWidth = $(window).width()
+        if val['description']
+          $('#' + id).click ->
+            mq = window.matchMedia( "(min-width: 500px)" )
+            if mq.matches
+              windowHeight = $(window).height()
+              dialogHeight = windowHeight * 0.2
+              windowWidth = $(window).width()
+              dialogWidth = windowWidth * 0.4
+            else
+              windowHeight = $(window).height()
+              windowWidth = $(window).width()
 
-              newDiv = $(document.createElement('div'))
-              newDiv.html "<p>#{val['description']}</p>"
-              newDiv.addClass "description-popup"
-              newDiv.dialog
-                minHeight: dialogHeight
-                minWidth: dialogWidth
-                closeOnEscape: true
-                title: val['class_name']
-                modal: true
-                buttons: [
-                  text: "Ok"
-                  click: ->
-                    $(this).dialog "close"
-                ]
-              false
+            newDiv = $(document.createElement('div'))
+            newDiv.html "<p>#{val['description']}</p>"
+            newDiv.addClass "description-popup"
+            newDiv.dialog
+              minHeight: dialogHeight
+              minWidth: dialogWidth
+              closeOnEscape: true
+              title: val['class_name']
+              modal: true
+              buttons: [
+                text: "Ok"
+                click: ->
+                  $(this).dialog "close"
+              ]
+            false
 
-          else
-            console.log("no data for #{val['class_name']}")
+        else
+          console.log("no data for #{val['class_name']}")
 
-          id_num += 1
+        id_num += 1
 
-    ).done((data) ->
-      $('#loading').hide()
-    ).fail ->
-      console.log 'failed'
+  $('#loading').hide()
 
 showPosition = (position) ->
   lat = position.coords.latitude
@@ -73,7 +70,65 @@ showPosition = (position) ->
 handleError = ->
   console.log "Error getting position"
 
+createDB = ->
+  console.log "in createDB"
+  request = indexedDB.open("schedules")
+
+  request.onupgradeneeded = ->
+    console.log "In onupgradeneeded"
+    db = request.result
+    store = db.createObjectStore("classes",
+      keyPath: "key"
+    )
+    titleIndex = store.createIndex("by_name", "name")
+    dateIndex = store.createIndex("by_date", "date")
+
+  request.onsuccess = ->
+    console.log "In onsuccess"
+    db = request.result
+    data = []
+
+    today = new Date().getDate()
+    if localStorage.dateStored == undefined || today != parseInt(localStorage.dateStored)
+      localStorage.dateStored = today
+      getdata(db)
+    else
+      store = db.transaction("classes").objectStore("classes");
+      request = store.openCursor()
+
+      request.onsuccess = (event) ->
+        cursor = event.target.result
+        if (cursor)
+          console.log cursor.value
+          data.push(cursor.value)
+          cursor.continue()
+        else
+          console.log("No more entries!")
+
+        writeTable(data)
+
+getdata = (db) ->
+  $.getJSON('/api', (data) ->
+    tx = db.transaction("classes", "readwrite")
+    store = tx.objectStore("classes")
+
+    for studio in data
+      studio.key = studio.studio_name.replace(/\s/g, '')
+      store.put studio
+
+    writeTable(data)
+
+    tx.oncomplete = ->
+      console.log "complete!"
+
+  ).done((data) ->
+    console.log "done loading json"
+  ).fail( ->
+    console.log "failed loading json"
+  )
+
 $(document).ready ->
+  createDB()
   if navigator.geolocation
     navigator.geolocation.getCurrentPosition showPosition, handleError
   else

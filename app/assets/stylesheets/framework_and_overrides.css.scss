@@ -34,7 +34,8 @@ img {
 // to make views framework-neutral
 main {
   @extend .container;
-  background-color: #eee;
+  /*background-color: #eee;*/
+  background-color: orange;
   padding-bottom: 80px;
   width: 100%;
   margin-top: 51px; // accommodate the navbar
@@ -51,4 +52,18 @@ ul li a {
 tr td a {
   text-decoration: none !important;
   color: black !important;
+}
+
+.well {
+  background-color: #E68A00;
+  border: black;
+}
+
+.jumbotron {
+  background-color: #E68A00;
+  color: #FFE680;
+}
+
+.blockquote {
+  border-left: none !important;
 }
