@@ -2,12 +2,16 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-writeTable = (data) ->
-  console.log data
+writeTable = (data, num_classes, start_time) ->
+  console.log "writing table"
   for studio in data
     name = studio['studio_name']
     classes = studio['class_list']
     link = studio['link']
+
+    if start_time == -1
+      start_time = new Date()
+      console.log start_time
 
     class_table = $('#class_table').find('tbody')
     id_num = 1
@@ -15,41 +19,51 @@ writeTable = (data) ->
       header = '<tr><th class="col-sm-8"><a target="_blank" href="' + link + '">' + name + '</th>' + '<th>Start Time</th>' + '<th>End Time</th></tr>'
       class_table.append header
 
+      num_written = 0
       $.each classes, (index, val) ->
-        id = name.replace(/\s/g, '') + id_num
-        row = '<tr><td><a id="' + id + '" href="javaScript:void(0);">' + val['class_name'] + '</a></td><td>' + val['start_time'] + '</td><td>' + val['end_time'] + '</td></tr>'
-        class_table.append row
+        timeArray = val['start_time'].trim().split(/[:\s]+/)
+        console.log timeArray[0]
+        hour = if timeArray[2] == 'PM' and timeArray[0] != '12' then parseInt(timeArray[0]) + 12 else timeArray[0]
+        now = new Date(start_time.getFullYear(), start_time.getMonth(), start_time.getDate(), hour, timeArray[1])
+        console.log now
+        console.log hour
 
-        if val['description']
-          $('#' + id).click ->
-            mq = window.matchMedia( "(min-width: 500px)" )
-            if mq.matches
-              windowHeight = $(window).height()
-              dialogHeight = windowHeight * 0.2
-              windowWidth = $(window).width()
-              dialogWidth = windowWidth * 0.4
-            else
-              windowHeight = $(window).height()
-              windowWidth = $(window).width()
+        if now >= start_time
+          id = name.replace(/\s/g, '') + id_num
+          row = '<tr><td><a id="' + id + '" href="javaScript:void(0);">' + val['class_name'] + '</a></td><td>' + val['start_time'] + '</td><td>' + val['end_time'] + '</td></tr>'
+          class_table.append row
 
-            newDiv = $(document.createElement('div'))
-            newDiv.html "<p>#{val['description']}</p>"
-            newDiv.addClass "description-popup"
-            newDiv.dialog
-              minHeight: dialogHeight
-              minWidth: dialogWidth
-              closeOnEscape: true
-              title: val['class_name']
-              modal: true
-              buttons: [
-                text: "Ok"
-                click: ->
-                  $(this).dialog "close"
-              ]
-            false
+          if val['description']
+            $('#' + id).click ->
+              mq = window.matchMedia( "(min-width: 500px)" )
+              if mq.matches
+                windowHeight = $(window).height()
+                dialogHeight = windowHeight * 0.2
+                windowWidth = $(window).width()
+                dialogWidth = windowWidth * 0.4
+              else
+                windowHeight = $(window).height()
+                windowWidth = $(window).width()
 
-        else
-          console.log("no data for #{val['class_name']}")
+              newDiv = $(document.createElement('div'))
+              newDiv.html "<p>#{val['description']}</p>"
+              newDiv.addClass "description-popup"
+              newDiv.dialog
+                minHeight: dialogHeight
+                minWidth: dialogWidth
+                closeOnEscape: true
+                title: val['class_name']
+                modal: true
+                buttons: [
+                  text: "Ok"
+                  click: ->
+                    $(this).dialog "close"
+                ]
+              false
+
+          num_written += 1
+          if num_written >= num_classes
+            return false
 
         id_num += 1
 
@@ -86,26 +100,28 @@ createDB = ->
   request.onsuccess = ->
     console.log "In onsuccess"
     db = request.result
-    data = []
+    cursorData = []
 
     today = new Date().getDate()
     if localStorage.dateStored == undefined || today != parseInt(localStorage.dateStored)
       localStorage.dateStored = today
       getdata(db)
     else
-      store = db.transaction("classes").objectStore("classes");
-      request = store.openCursor()
+      transaction = db.transaction("classes")
+      store = transaction.objectStore("classes");
+      cursorRequest = store.openCursor()
 
-      request.onsuccess = (event) ->
+      cursorRequest.onsuccess = (event) ->
         cursor = event.target.result
-        if (cursor)
-          console.log cursor.value
-          data.push(cursor.value)
+        if cursor
+          cursorData.push(cursor.value)
           cursor.continue()
         else
           console.log("No more entries!")
 
-        writeTable(data)
+      transaction.oncomplete = ->
+        writeTable(cursorData, 3, -1)
+
 
 getdata = (db) ->
   $.getJSON('/api', (data) ->
@@ -116,7 +132,7 @@ getdata = (db) ->
       studio.key = studio.studio_name.replace(/\s/g, '')
       store.put studio
 
-    writeTable(data)
+    writeTable(data, 3, -1)
 
     tx.oncomplete = ->
       console.log "complete!"
@@ -128,6 +144,7 @@ getdata = (db) ->
   )
 
 $(document).ready ->
+  console.log "document ready"
   createDB()
   if navigator.geolocation
     navigator.geolocation.getCurrentPosition showPosition, handleError

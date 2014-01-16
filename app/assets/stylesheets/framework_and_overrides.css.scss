@@ -34,8 +34,8 @@ img {
 // to make views framework-neutral
 main {
   @extend .container;
-  /*background-color: #eee;*/
-  background-color: orange;
+  background-color: #eee;
+  /*background-color: orange;*/
   padding-bottom: 80px;
   width: 100%;
   margin-top: 51px; // accommodate the navbar
@@ -54,7 +54,7 @@ tr td a {
   color: black !important;
 }
 
-.well {
+/*.well {
   background-color: #E68A00;
   border: black;
 }
@@ -66,4 +66,7 @@ tr td a {
 
 .blockquote {
   border-left: none !important;
-}
+}*/
+
+/*$btn-color = rgba(226, 93, 136, 0.79)
+$navbar-color = rgba(128, 133, 17, 0.86)*/
