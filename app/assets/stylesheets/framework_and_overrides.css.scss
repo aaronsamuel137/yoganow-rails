@@ -1,6 +1,12 @@
 // import the CSS framework
 @import "bootstrap";
 
+$background: orange;
+$btn-color: rgba(226, 93, 136, 0.79);
+$navbar-color: rgba(128, 133, 17, 0.86);
+$well-background: #E68A00;
+$text-color: #FFE680;
+
 // make all images responsive by default
 img {
   @extend .img-responsive;
@@ -34,8 +40,7 @@ img {
 // to make views framework-neutral
 main {
   @extend .container;
-  background-color: #eee;
-  /*background-color: orange;*/
+  background-color: $background;
   padding-bottom: 80px;
   width: 100%;
   margin-top: 51px; // accommodate the navbar
@@ -54,19 +59,28 @@ tr td a {
   color: black !important;
 }
 
-/*.well {
-  background-color: #E68A00;
+.well {
+  background-color: $well-background;
   border: black;
 }
 
 .jumbotron {
-  background-color: #E68A00;
-  color: #FFE680;
+  background-color: $well-background;
+  color: $text-color;
+}
+.navbar-inverse {
+/*  background-color: $navbar-color;
+  border-color: $navbar-color;*/
 }
 
-.blockquote {
-  border-left: none !important;
-}*/
+blockquote {
+  border-color: $background;
+}
 
-/*$btn-color = rgba(226, 93, 136, 0.79)
-$navbar-color = rgba(128, 133, 17, 0.86)*/
+h3 {
+  color: $text-color;
+}
+
+h1 {
+  color: $text-color;
+}

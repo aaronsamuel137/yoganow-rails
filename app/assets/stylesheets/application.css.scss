@@ -19,7 +19,9 @@
 }
 
 .buttons-holder {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: center;
   justify-content: center;
   flex-wrap: wrap;
   padding-left: 10px;
