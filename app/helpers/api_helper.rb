@@ -214,37 +214,23 @@ module ApiHelper
     end
   end
 
-  def self.get_studio_data(studio_data, num_classes, start_time)
+  def self.get_studio_data(studio_data)
     now = DateTime.now.in_time_zone('Mountain Time (US & Canada)')
     current_date = now.strftime("%Y-%m-%d %Z ")
-
-    if start_time == -1
-      begin_time = now
-    else
-      begin_time = DateTime.strptime(current_date + start_time.to_s, "%Y-%m-%d %Z %H")
-    end
 
     params = {day: now.to_date, studio: studio_data.studio_name}
     classes = YogaClass.where("day = ? AND studio = ?", params[:day], params[:studio]).order(start: :asc)
     class_list = []
-    class_ctr = 0
 
     classes.each do |clas|
-      if clas.start >= begin_time
-        class_start = clas.start.strftime("%l:%M %p")
-        class_end = clas.end.strftime("%l:%M %p")
-        class_data = {'class_name' => clas.name,
-                      'start_time' => class_start,
-                      'end_time' => class_end,
-                      'date' => clas.day,
-                      'description' => clas.description}
-        class_list.push(class_data)
-        class_ctr += 1
-
-        if num_classes > 0 && class_ctr >= num_classes
-          break
-        end
-      end
+      class_start = clas.start.strftime("%l:%M %p")
+      class_end = clas.end.strftime("%l:%M %p")
+      class_data = {'class_name' => clas.name,
+                    'start_time' => class_start,
+                    'end_time' => class_end,
+                    'date' => clas.day,
+                    'description' => clas.description}
+      class_list.push(class_data)
     end
 
     data = {'studio_name' => studio_data.studio_name,

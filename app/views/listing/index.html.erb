@@ -12,38 +12,38 @@
         <div class="btn-group table-button">
           <button data-toggle="dropdown" class="btn btn-primary btn-block dropdown-toggle">Number of Classes Displayed <span class="caret"></span>
           </button>
-          <ul class="dropdown-menu">
-            <li><a href="#" onclick="window.location.href='?num_classes=1';">1</a></li>
-            <li><a href="#" onclick="window.location.href='?num_classes=2';">2</a></li>
-            <li><a href="#" onclick="window.location.href='?num_classes=3';">3</a></li>
-            <li><a href="#" onclick="window.location.href='?num_classes=4';">4</a></li>
-            <li><a href="#" onclick="window.location.href='?num_classes=-1';">Rest of Day</a></li>
+          <ul id="num-classes-dropdown" class="dropdown-menu">
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(1, null); return false;">1</a></li>
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(2, null); return false;">2</a></li>
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(3, null); return false;">3</a></li>
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(4, null); return false;">4</a></li>
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(-1, null); return false;">Rest of Day</a></li>
           </ul>
         </div>
 
         <div class="btn-group table-button">
           <button data-toggle="dropdown" class="btn btn-primary btn-block dropdown-toggle">Starting Time <span class="caret"></span>
           </button>
-          <ul class="dropdown-menu">
-            <li><a href="#" onclick="window.location.href='?start_time=-1';">NOW!</a></li>
-            <li><a href="#" onclick="window.location.href='?start_time=5';">5:00 am</a></li>
-            <li><a href="#" onclick="window.location.href='?start_time=6';">6:00 am</a></li>
-            <li><a href="#" onclick="window.location.href='?start_time=7';">7:00 am</a></li>
-            <li><a href="#" onclick="window.location.href='?start_time=8';">8:00 am </a></li>
-            <li><a href="#" onclick="window.location.href='?start_time=9';">9:00 am</a></li>
-            <li><a href="#" onclick="window.location.href='?start_time=10';">10:00 am</a></li>
-            <li><a href="#" onclick="window.location.href='?start_time=11';">11:00 am</a></li>
-            <li><a href="#" onclick="window.location.href='?start_time=12';">12:00 pm</a></li>
-            <li><a href="#" onclick="window.location.href='?start_time=13';">1:00 pm</a></li>
-            <li><a href="#" onclick="window.location.href='?start_time=14';">2:00 pm</a></li>
-            <li><a href="#" onclick="window.location.href='?start_time=15';">3:00 pm</a></li>
-            <li><a href="#" onclick="window.location.href='?start_time=16';">4:00 pm</a></li>
-            <li><a href="#" onclick="window.location.href='?start_time=17';">5:00 pm</a></li>
-            <li><a href="#" onclick="window.location.href='?start_time=18';">6:00 pm</a></li>
-            <li><a href="#" onclick="window.location.href='?start_time=19';">7:00 pm</a></li>
-            <li><a href="#" onclick="window.location.href='?start_time=20';">8:00 pm</a></li>
-            <li><a href="#" onclick="window.location.href='?start_time=21';">9:00 pm</a></li>
-            <li><a href="#" onclick="window.location.href='?start_time=22';">10:00 pm</a></li>
+          <ul id="start-time-dropdown" class="dropdown-menu">
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(null, -1); return false;">NOW!</a></li>
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(null, 5); return false;">5:00 am</a></li>
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(null, 6); return false;">6:00 am</a></li>
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(null, 7); return false;">7:00 am</a></li>
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(null, 8); return false;">8:00 am </a></li>
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(null, 9); return false;">9:00 am</a></li>
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(null, 10); return false;">10:00 am</a></li>
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(null, 11); return false;">11:00 am</a></li>
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(null, 12); return false;">12:00 pm</a></li>
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(null, 13); return false;">1:00 pm</a></li>
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(null, 14); return false;">2:00 pm</a></li>
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(null, 15); return false;">3:00 pm</a></li>
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(null, 16); return false;">4:00 pm</a></li>
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(null, 17); return false;">5:00 pm</a></li>
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(null, 18); return false;">6:00 pm</a></li>
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(null, 19); return false;">7:00 pm</a></li>
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(null, 20); return false;">8:00 pm</a></li>
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(null, 21); return false;">9:00 pm</a></li>
+            <li><a href="javaScript:void(0);" onclick="getOrLoadData(null, 22); return false;">10:00 pm</a></li>
           </ul>
         </div>
       </div>
@@ -54,7 +54,10 @@
       </div>
       <div class="table-holder">
         <table id="class_table" class="table table-striped">
-          <caption id="location-div" class="info">Displaying <%= @num_classes %> from each studio, starting <%= @start_time %></caption>
+          <caption class="info">
+            <div id="info-div"></div>
+            <div id="location-div"></div>
+          </caption>
           <tbody></tbody>
         </table>
       </div>

@@ -2,33 +2,52 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-writeTable = (data, num_classes, start_time) ->
-  console.log "writing table"
+writeTable = (data, numClasses, startTime) ->
+  # if numClasses or startTime is null, grab it from local storage
+  if numClasses == null
+    numClasses = parseInt(sessionStorage.numClasses)
+  else
+    numClasses = parseInt(numClasses)
+    sessionStorage.numClasses = numClasses
+  if startTime == null
+    startTime = parseInt(sessionStorage.startTime)
+  else
+    startTime = parseInt(startTime)
+    sessionStorage.startTime = startTime
+
+  # set start to be a Date object indicating the desired start time
+  currentTime = new Date()
+  if startTime == -1
+    start = currentTime
+  else
+    start = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), startTime)
+
+  class_table = $('#class_table').find('tbody')
+  class_table.empty()
+
   for studio in data
     name = studio['studio_name']
     classes = studio['class_list']
     link = studio['link']
-
-    if start_time == -1
-      start_time = new Date()
-      console.log start_time
-
-    class_table = $('#class_table').find('tbody')
     id_num = 1
+
     unless classes.length is 0
       header = '<tr><th class="col-sm-8"><a target="_blank" href="' + link + '">' + name + '</th>' + '<th>Start Time</th>' + '<th>End Time</th></tr>'
-      class_table.append header
+      headerAdded = false
 
       num_written = 0
       $.each classes, (index, val) ->
         timeArray = val['start_time'].trim().split(/[:\s]+/)
-        console.log timeArray[0]
-        hour = if timeArray[2] == 'PM' and timeArray[0] != '12' then parseInt(timeArray[0]) + 12 else timeArray[0]
-        now = new Date(start_time.getFullYear(), start_time.getMonth(), start_time.getDate(), hour, timeArray[1])
-        console.log now
-        console.log hour
+        hour = parseInt(timeArray[0])
+        if timeArray[2] == 'PM' and timeArray[0] != '12'
+          hour += 12
+        classTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), hour, timeArray[1])
 
-        if now >= start_time
+        if classTime >= start
+          if !headerAdded
+            headerAdded = true
+            class_table.append header
+
           id = name.replace(/\s/g, '') + id_num
           row = '<tr><td><a id="' + id + '" href="javaScript:void(0);">' + val['class_name'] + '</a></td><td>' + val['start_time'] + '</td><td>' + val['end_time'] + '</td></tr>'
           class_table.append row
@@ -62,11 +81,31 @@ writeTable = (data, num_classes, start_time) ->
               false
 
           num_written += 1
-          if num_written >= num_classes
+          if numClasses != -1 and num_written >= numClasses
             return false
 
         id_num += 1
 
+  if startTime == -1
+    timeStr = 'NOW'
+  else
+    hour = start.getHours()
+    if hour > 12
+      hour -= 12
+      amPm = 'PM'
+    else
+      amPm = 'AM'
+    timeStr = 'at ' + hour + ':00 ' + amPm
+
+  switch numClasses
+    when 1
+      numStr = 'one class'
+    when -1
+      numStr = 'all remaining'
+    else
+      numStr = numClasses + ' classes'
+
+  $('#info-div').html("Displaying #{numStr} from each studio, starting #{timeStr}")
   $('#loading').hide()
 
 showPosition = (position) ->
@@ -79,33 +118,28 @@ showPosition = (position) ->
     if distance < lowest
       lowest = distance
       studio = loc.name
-  $('#location-div').append "<br>Closest studio is #{studio}"
+  $('#location-div').append "Closest studio is #{studio}"
 
 handleError = ->
   console.log "Error getting position"
 
-createDB = ->
-  console.log "in createDB"
+@getOrLoadData = (numClasses, start_time) ->
   request = indexedDB.open("schedules")
 
   request.onupgradeneeded = ->
-    console.log "In onupgradeneeded"
     db = request.result
     store = db.createObjectStore("classes",
       keyPath: "key"
     )
-    titleIndex = store.createIndex("by_name", "name")
-    dateIndex = store.createIndex("by_date", "date")
 
   request.onsuccess = ->
-    console.log "In onsuccess"
     db = request.result
     cursorData = []
 
     today = new Date().getDate()
     if localStorage.dateStored == undefined || today != parseInt(localStorage.dateStored)
       localStorage.dateStored = today
-      getdata(db)
+      getdata(db, numClasses, start_time)
     else
       transaction = db.transaction("classes")
       store = transaction.objectStore("classes");
@@ -116,14 +150,12 @@ createDB = ->
         if cursor
           cursorData.push(cursor.value)
           cursor.continue()
-        else
-          console.log("No more entries!")
 
       transaction.oncomplete = ->
-        writeTable(cursorData, 3, -1)
+        writeTable(cursorData, numClasses, start_time)
 
 
-getdata = (db) ->
+getdata = (db, numClasses, start_time) ->
   $.getJSON('/api', (data) ->
     tx = db.transaction("classes", "readwrite")
     store = tx.objectStore("classes")
@@ -132,7 +164,7 @@ getdata = (db) ->
       studio.key = studio.studio_name.replace(/\s/g, '')
       store.put studio
 
-    writeTable(data, 3, -1)
+    writeTable(data, numClasses, start_time)
 
     tx.oncomplete = ->
       console.log "complete!"
@@ -144,8 +176,13 @@ getdata = (db) ->
   )
 
 $(document).ready ->
-  console.log "document ready"
-  createDB()
+  if !sessionStorage.numClasses
+    sessionStorage.numClasses = 3
+  if !sessionStorage.startTime
+    sessionStorage.startTime = -1
+
+  getOrLoadData(sessionStorage.numClasses, sessionStorage.startTime)
+
   if navigator.geolocation
     navigator.geolocation.getCurrentPosition showPosition, handleError
   else
