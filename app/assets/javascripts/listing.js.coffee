@@ -175,11 +175,31 @@ getdata = (db, numClasses, start_time) ->
     console.log "failed loading json"
   )
 
+loadSutra = ->
+  if !localStorage.prevSutra
+    localStorage.prevSutra = 1
+    sutra = 'nil'
+  else
+    sutra = localStorage.prevSutra
+    localStorage.prevSutra = parseInt(localStorage.prevSutra) + 1
+  $('#sutra').load("sutra?previous=#{sutra}")
+
 @ready = ->
   if !sessionStorage.numClasses
     sessionStorage.numClasses = 3
   if !sessionStorage.startTime
     sessionStorage.startTime = -1
+
+  loadSutra()
+  $('#previous').click ->
+    sutra = parseInt(localStorage.prevSutra) - 2
+    localStorage.prevSutra = sutra
+    $('#sutra').load("sutra?previous=#{sutra}")
+
+  $('#next').click ->
+    sutra = parseInt(localStorage.prevSutra) + 1
+    localStorage.prevSutra = sutra
+    $('#sutra').load("sutra?previous=#{sutra}")
 
   getOrLoadData(sessionStorage.numClasses, sessionStorage.startTime)
 

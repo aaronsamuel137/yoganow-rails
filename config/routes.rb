@@ -3,6 +3,7 @@ Yoga::Application.routes.draw do
   ActiveAdmin.routes(self)
   root 'listing#index'
   get '/api', to: 'api#index'
+  get '/sutra', to: 'api#sutra'
   get '/events', to: 'events#events'
   get '/contact', to: 'static#contact'
   # get '/test', to: 'static#test'

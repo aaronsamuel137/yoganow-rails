@@ -11,6 +11,10 @@ module TaskHelper
       if match = line.to_s.match(/<a .*>(.*)<br>(.*)<br>(.*)<\/a>/m)
         devanagari, translit, english = match.captures.map { |capt| capt.strip }
         verse = "#{chapter}.#{number}"
+        if verse.size == 3
+          verse = verse.gsub('.', '.0')
+        end
+        puts verse
         link = line['href']
 
         Sutra.create(

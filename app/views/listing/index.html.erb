@@ -77,14 +77,20 @@
        just to find an interesting class. There are plans to support more studios as time goes on.</p>
 
     <%= image_tag 'divider.png', width: '100%' %>
-    <blockquote>
-      <br>
-      <p><%= @quote.devanagari %><br><br>
-         <%= @quote.transliteration %><br><br>
-         <%= @quote.english %><br><br>
-      </p>
-      <small class="pull-right"><a target="_blank" href="<%= @quote.link %>">Yoga Sutras <%= @quote.verse %></a></small>
-    </blockquote>
+
+    <div class="sutra-holder">
+      <div>
+        <h3>Study the Yoga Sutras!</h3>
+        <p>Each time you come to this site, the next verse will be displayed. Or, use the buttons to navigate through the verses.</p>
+      </div>
+      <blockquote>
+        <div id="sutra"></div>
+      </blockquote>
+      <div class="buttons-holder">
+        <button id="previous" class="btn btn-primary table-button" style="float: left">Previous</button>
+        <button id="next" class="btn btn-primary table-button">Next</button>
+      </div>
+    </div>
   </div>
 </div>
 
