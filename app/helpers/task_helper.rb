@@ -14,7 +14,6 @@ module TaskHelper
         if verse.size == 3
           verse = verse.gsub('.', '.0')
         end
-        puts verse
         link = line['href']
 
         Sutra.create(

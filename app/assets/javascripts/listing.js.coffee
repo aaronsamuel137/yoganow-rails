@@ -177,11 +177,11 @@ getdata = (db, numClasses, start_time) ->
 
 loadSutra = ->
   if !localStorage.prevSutra
-    localStorage.prevSutra = 1
+    localStorage.prevSutra = 0
     sutra = 'nil'
   else
-    sutra = localStorage.prevSutra
     localStorage.prevSutra = parseInt(localStorage.prevSutra) + 1
+    sutra = localStorage.prevSutra
   $('#sutra').load("sutra?previous=#{sutra}")
 
 @ready = ->
@@ -192,7 +192,7 @@ loadSutra = ->
 
   loadSutra()
   $('#previous').click ->
-    sutra = parseInt(localStorage.prevSutra) - 2
+    sutra = parseInt(localStorage.prevSutra) - 1
     localStorage.prevSutra = sutra
     $('#sutra').load("sutra?previous=#{sutra}")
 
