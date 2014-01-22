@@ -175,7 +175,7 @@ getdata = (db, numClasses, start_time) ->
     console.log "failed loading json"
   )
 
-$(document).ready ->
+@ready = ->
   if !sessionStorage.numClasses
     sessionStorage.numClasses = 3
   if !sessionStorage.startTime
@@ -183,7 +183,8 @@ $(document).ready ->
 
   getOrLoadData(sessionStorage.numClasses, sessionStorage.startTime)
 
-  if navigator.geolocation
-    navigator.geolocation.getCurrentPosition showPosition, handleError
-  else
-    console.log "Geolocation is not supported by this browser."
+  # UNCOMMENT THIS SECTION TO TURN ON LOCATING CLOSEST STUDIO
+  # if navigator.geolocation
+  #   navigator.geolocation.getCurrentPosition showPosition, handleError
+  # else
+  #   console.log "Geolocation is not supported by this browser."
