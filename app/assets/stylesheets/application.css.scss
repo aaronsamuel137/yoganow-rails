@@ -19,18 +19,13 @@
 }
 
 .buttons-holder {
-  display: -webkit-flex;
-  display: flex;
-  -webkit-justify-content: center;
-  justify-content: center;
-  flex-wrap: wrap;
   padding-left: 10px;
   padding-right: 10px;
+  text-align: center;
 }
 
 .table-button {
-  flex-grow: 1;
-  flex-basis: 0;
+  min-width: 50%;
 }
 
 .info {
@@ -45,7 +40,7 @@
 }
 
 @media (max-width: 500px) {
-  .buttons-holder {
-    flex-direction: column;
+  .table-button {
+    min-width: 100%;
   }
 }
