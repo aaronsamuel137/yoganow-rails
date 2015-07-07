@@ -16,13 +16,13 @@ module ApiHelper
     ApiHelper.load_yogaworkshop(StudioConstants::YOGA_WORKSHOP_DATA)
     puts "Done loading data for Yoga Workshop"
 
-    puts "Loading data for Studio Be"
-    ApiHelper.load_studio_be(StudioConstants::STUDIO_BE_DATA)
-    puts "Done loading data for Studio Be"
+    # puts "Loading data for Studio Be"
+    # ApiHelper.load_studio_be(StudioConstants::STUDIO_BE_DATA)
+    # puts "Done loading data for Studio Be"
 
-    puts "Loading data for Adi Shakti"
-    ApiHelper.load_adi_shakti(StudioConstants::ADI_SHAKTI_DATA)
-    puts "Done loading data for Adi Shakti"
+    # puts "Loading data for Adi Shakti"
+    # ApiHelper.load_adi_shakti(StudioConstants::ADI_SHAKTI_DATA)
+    # puts "Done loading data for Adi Shakti"
   end
 
   def self.load_yogaworkshop(studio_data)
